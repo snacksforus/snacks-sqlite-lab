@@ -40,3 +40,12 @@ select Person.FirstName, Person.LastName, Snack.Name
 from Person
 cross join Snack;
 ```
+
+A full outer join combines a left joing and a right join.
+
+```sqlite
+select Snack.Name, Ingredient.Name
+from Snack
+full outer join SnackIngredient on Snack.id = SnackIngredient.SnackId
+full outer join Ingredient on SnackIngredient.IngredientId = Ingredient.Id;
+```
