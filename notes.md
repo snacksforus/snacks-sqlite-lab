@@ -32,3 +32,11 @@ from Snack
 right join SnackIngredient on snack.Id = SnackIngredient.SnackId
 right join Ingredient on SnackIngredient.IngredientId = Ingredient.Id;
 ```
+
+A cross join does a cartisian product of two tables.
+
+```sqlite
+select Person.FirstName, Person.LastName, Snack.Name
+from Person
+cross join Snack;
+```
