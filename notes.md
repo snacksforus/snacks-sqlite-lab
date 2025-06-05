@@ -1,5 +1,19 @@
 # Notes
 
+## Pragmas
+
+Consider setting the following pragmas:
+
+- `journal_mode = WAL`: transactions use a write-ahead log instead of rollback journal
+   Readers do not block writers and writers do not block readers.
+   See [Write-Ahead Logging](https://www.sqlite.org/wal.html) for advantages and disadvantages.
+- `synchronous = NORMAL`: database synchronizes less frequently, but is still when using
+   a write-ahead log 
+- `cache_size = -1000000`: set the suggested maximum size of disk pages to about 1GB
+- `foreign_keys = true`: enforce foreign key constraint
+- `busy_timeout = 5000`: adjusts how long the database will wait before raising a `SQLITE_BUSY`
+   error.  Consider 5000 (5 seconds) to 15000 (15 seconds).
+
 ## Joins
 
 An inner join combines columns from tables where the join condition matches.
@@ -49,3 +63,11 @@ from Snack
 full outer join SnackIngredient on Snack.id = SnackIngredient.SnackId
 full outer join Ingredient on SnackIngredient.IngredientId = Ingredient.Id;
 ```
+
+## Transactions
+
+Consider using `BEGIN IMMEDIATE` transactions.  This will cause a lock to immediately be placed
+on the database.  The default behavior of `BEGIN` is to upgrade the transaction and place a lock
+when the transaction actually writes to the database.  The default behavior can allow another
+process to place a lock on the database while the first process is in the middle of a `BEGIN`
+transaction.
